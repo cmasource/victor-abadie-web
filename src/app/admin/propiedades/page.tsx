@@ -12,7 +12,7 @@ export default async function AdminPropertiesPage() {
   }
   if (!access.authorized) {
     return (
-      <AdminShell email={access.email}>
+      <AdminShell email={access.email} role={null}>
         <NotAuthorized />
       </AdminShell>
     );
@@ -21,7 +21,7 @@ export default async function AdminPropertiesPage() {
   const properties = await getProperties();
 
   return (
-    <AdminShell email={access.email}>
+    <AdminShell email={access.email} role={access.admin?.role}>
       <div className="flex flex-col gap-4 rounded-lg border border-black/5 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-black uppercase tracking-[0.18em] text-brand-dark">
@@ -62,7 +62,12 @@ export default async function AdminPropertiesPage() {
       ) : (
         <div className="mt-8 grid gap-4">
           {properties.map((property) => (
-            <AdminPropertyCard key={property.id} property={property} showActions />
+            <AdminPropertyCard
+              key={property.id}
+              property={property}
+              showActions
+              role={access.admin?.role}
+            />
           ))}
         </div>
       )}

@@ -10,14 +10,14 @@ export default async function NewPropertyPage() {
   }
   if (!access.authorized) {
     return (
-      <AdminShell email={access.email}>
+      <AdminShell email={access.email} role={null}>
         <NotAuthorized />
       </AdminShell>
     );
   }
 
   return (
-    <AdminShell email={access.email}>
+    <AdminShell email={access.email} role={access.admin?.role}>
       <div className="max-w-3xl">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-dark">
           Nueva propiedad

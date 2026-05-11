@@ -1,7 +1,7 @@
 export const siteConfig = {
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://victor-abadie-inmobiliaria.vercel.app",
+    "https://victor-abadie-web.vercel.app",
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   supabaseKey:
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||

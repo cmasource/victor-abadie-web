@@ -3,16 +3,19 @@ import Link from "next/link";
 import { AdminBadge, statusTone } from "@/components/admin/AdminBadge";
 import { AdminPropertyActions } from "@/components/admin/AdminPropertyActions";
 import { formatPrice } from "@/lib/formatters";
+import type { AdminRole } from "@/lib/adminAuth";
 import type { Property } from "@/types/property";
 
 type AdminPropertyCardProps = {
   property: Property;
   showActions?: boolean;
+  role?: AdminRole | null;
 };
 
 export function AdminPropertyCard({
   property,
   showActions = false,
+  role,
 }: AdminPropertyCardProps) {
   return (
     <article className="grid min-w-0 gap-4 overflow-hidden rounded-lg border border-black/5 bg-white p-4 shadow-sm transition hover:border-brand/30 hover:shadow-md lg:grid-cols-[140px_1fr_220px] lg:items-center">
@@ -68,6 +71,7 @@ export function AdminPropertyCard({
             id={property.id}
             published={property.published}
             featured={property.featured}
+            role={role}
           />
         ) : null}
       </div>

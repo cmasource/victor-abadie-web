@@ -1,20 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LogoutButton } from "@/components/admin/LogoutButton";
+import type { AdminRole } from "@/lib/adminAuth";
 
 const adminLinks = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/propiedades", label: "Propiedades" },
   { href: "/admin/propiedades/nueva", label: "Nueva propiedad" },
+  { href: "/admin/mi-cuenta", label: "Mi cuenta" },
   { href: "/", label: "Ver sitio" },
 ];
 
 type AdminShellProps = {
   children: React.ReactNode;
   email?: string | null;
+  role?: AdminRole | null;
 };
 
-export function AdminShell({ children, email }: AdminShellProps) {
+export function AdminShell({ children, email, role }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-surface">
       <header className="border-b border-black/5 bg-white shadow-sm">
@@ -54,8 +57,15 @@ export function AdminShell({ children, email }: AdminShellProps) {
         </div>
       </header>
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
-        {email ? (
-          <p className="mb-5 text-xs font-medium text-muted">Sesión: {email}</p>
+        {email || role ? (
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs font-medium text-muted">
+            {email ? <span>Sesión: {email}</span> : null}
+            {role ? (
+              <span className="rounded-full bg-brand/10 px-3 py-1 font-black uppercase text-brand-dark">
+                {role}
+              </span>
+            ) : null}
+          </div>
         ) : null}
         {children}
       </main>

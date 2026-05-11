@@ -16,7 +16,7 @@ export default async function EditPropertyPage({ params }: EditPropertyPageProps
   }
   if (!access.authorized) {
     return (
-      <AdminShell email={access.email}>
+      <AdminShell email={access.email} role={null}>
         <NotAuthorized />
       </AdminShell>
     );
@@ -31,7 +31,7 @@ export default async function EditPropertyPage({ params }: EditPropertyPageProps
   }
 
   return (
-    <AdminShell email={access.email}>
+    <AdminShell email={access.email} role={access.admin?.role}>
       <p className="text-sm font-black uppercase tracking-[0.18em] text-brand-dark">
         Editar propiedad
       </p>

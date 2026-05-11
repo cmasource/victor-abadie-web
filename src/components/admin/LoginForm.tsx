@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
@@ -71,6 +72,12 @@ export function LoginForm() {
       >
         {loading ? "Ingresando..." : "Ingresar"}
       </button>
+      <Link
+        href="/admin/recuperar-password"
+        className="text-center text-sm font-black text-brand-dark hover:text-brand"
+      >
+        Olvidé mi contraseña
+      </Link>
     </form>
   );
 }
