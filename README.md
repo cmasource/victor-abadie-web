@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Víctor Abadie Inmobiliaria
 
-## Getting Started
+Web responsive para inmobiliaria local de San Luis creada con Next.js App Router, TypeScript y Tailwind CSS.
 
-First, run the development server:
+## Correr el proyecto
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Editar propiedades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Las propiedades se cargan desde:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/data/properties.json
+```
 
-## Learn More
+Cada propiedad tiene campos como `slug`, `operation`, `type`, `title`, `location`, `city`, `neighborhood`, `price`, `numericPrice`, `createdAt`, `mainImage`, `images`, `features` y `tags`.
 
-To learn more about Next.js, take a look at the following resources:
+- Usá `numericPrice: null` cuando el precio sea "Consultar precio".
+- Usá `createdAt` con formato `YYYY-MM-DD` para ordenar por recientes.
+- El `slug` define la URL: `/propiedades/[slug]`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Agregar imágenes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Guardá las fotos en:
 
-## Deploy on Vercel
+```text
+public/properties/
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Luego actualizá `mainImage` e `images` en el JSON. Ejemplo:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+"mainImage": "/properties/casa-juana-koslay-1.jpg"
+```
+
+Los logos están en:
+
+```text
+public/brand/logo-horizontal.jpg
+public/brand/logo-cuadrado.png
+public/brand/favicon.png
+```
+
+## Cambiar WhatsApp y teléfono
+
+Editá:
+
+```text
+src/lib/whatsapp.ts
+```
+
+Ahí están `WHATSAPP_NUMBER`, `DISPLAY_WHATSAPP`, `PHONE_NUMBER` y los mensajes base.
+
+## Cambiar SITE_URL
+
+Mientras no haya dominio propio se usa:
+
+```text
+https://victor-abadie-inmobiliaria.vercel.app
+```
+
+Para cambiarlo, editá:
+
+```text
+src/lib/site.ts
+```
+
+Ese valor alimenta metadata, Open Graph, JSON-LD, sitemap y robots.
+
+## Deploy en Vercel
+
+1. Subir el proyecto a GitHub.
+2. Importar el repositorio desde Vercel.
+3. Framework: Next.js.
+4. Build command: `npm run build`.
+5. No requiere variables de entorno en esta versión.
+
+## Panel administrativo con Supabase
+
+El Sprint 4 agrega un panel privado en:
+
+```text
+/admin/login
+```
+
+Para activarlo hacen falta estas variables:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+También se soporta:
+
+```env
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+```
+
+No usar `service_role` en el frontend.
+
+El SQL de base de datos y políticas está en:
+
+```text
+supabase/schema.sql
+```
+
+La guía paso a paso está en:
+
+```text
+docs/supabase-setup.md
+```
+
+Si Supabase no está configurado, las páginas públicas siguen funcionando con el fallback JSON de `src/data/properties.json`.

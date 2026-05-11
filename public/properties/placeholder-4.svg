@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Foto de propiedad">
+  <rect width="1200" height="900" fill="#F1F1F1"/>
+  <rect x="220" y="280" width="760" height="360" rx="16" fill="#fff"/>
+  <rect x="270" y="350" width="660" height="170" rx="8" fill="#63B54C" opacity=".18"/>
+  <rect x="310" y="545" width="580" height="35" fill="#111111" opacity=".85"/>
+  <text x="600" y="720" text-anchor="middle" font-family="Montserrat, Arial" font-size="42" font-weight="700" fill="#111111">Foto de propiedad</text>
+</svg>

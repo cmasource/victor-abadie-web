@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Foto de propiedad">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0"><stop stop-color="#F1F1F1"/><stop offset="1" stop-color="#E7F5E3"/></linearGradient></defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <rect x="210" y="265" width="780" height="390" rx="22" fill="#fff" opacity=".88"/>
+  <path d="M270 570 455 405l125 110 120-95 230 150" fill="none" stroke="#63B54C" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="730" text-anchor="middle" font-family="Montserrat, Arial" font-size="42" font-weight="700" fill="#111111">Foto de propiedad</text>
+</svg>
