@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ContactCTA } from "@/components/ContactCTA";
 import { Hero } from "@/components/Hero";
-import { InstagramEmbed } from "@/components/InstagramEmbed";
+import { InstagramFeedSection } from "@/components/InstagramFeedSection";
 import { JsonLd } from "@/components/JsonLd";
 import { PropertyGrid } from "@/components/PropertyGrid";
 import { SectionTitle } from "@/components/SectionTitle";
@@ -96,7 +96,7 @@ export default async function Home() {
       </section>
 
       <SellPropertySection />
-      <InstagramEmbed />
+      <InstagramFeedSection />
 
       <section className="container-page py-14">
         <div className="rounded-lg bg-[#111111] p-8 text-white md:flex md:items-center md:justify-between md:gap-8">

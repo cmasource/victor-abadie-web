@@ -4,6 +4,7 @@ import type { Property } from "@/types/property";
 
 type InstagramShowcaseProps = {
   properties?: Property[];
+  compact?: boolean;
 };
 
 const fallbackPosts = [
@@ -45,7 +46,7 @@ const fallbackPosts = [
   },
 ];
 
-export function InstagramShowcase({ properties = [] }: InstagramShowcaseProps) {
+export function InstagramShowcase({ properties = [], compact = false }: InstagramShowcaseProps) {
   const realPosts = properties.slice(0, 6).map((property) => ({
     image: property.mainImage,
     badge: property.type,
@@ -55,8 +56,9 @@ export function InstagramShowcase({ properties = [] }: InstagramShowcaseProps) {
   const posts = [...realPosts, ...fallbackPosts].slice(0, 6);
 
   return (
-    <section className="bg-surface">
-      <div className="container-page py-14">
+    <div className={compact ? "mt-8" : "bg-surface"}>
+      <div className={compact ? "" : "container-page py-14"}>
+        {!compact ? (
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-dark">
@@ -84,6 +86,11 @@ export function InstagramShowcase({ properties = [] }: InstagramShowcaseProps) {
             </Link>
           </div>
         </div>
+        ) : (
+          <p className="text-xs font-semibold text-muted">
+            Vista previa visual. Para feed automático se puede integrar un widget externo.
+          </p>
+        )}
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, index) => (
@@ -122,6 +129,6 @@ export function InstagramShowcase({ properties = [] }: InstagramShowcaseProps) {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
