@@ -1,23 +1,14 @@
 import Link from "next/link";
 import { InstagramExternalWidget } from "@/components/InstagramExternalWidget";
-import { InstagramShowcase } from "@/components/InstagramShowcase";
-import {
-  getInstagramWidgetDebugInfo,
-  hasInstagramWidgetConfig,
-  instagramWidgetConfig,
-} from "@/config/instagramWidget";
-import { getPublishedProperties } from "@/lib/propertiesRepository";
+
+const ELFSIGHT_SCRIPT_SRC = "https://elfsightcdn.com/platform.js";
+
+const ELFSIGHT_CONTAINER_HTML =
+  '<div class="elfsight-app-0a1b9bbd-6582-448f-a776-e85c07d90477" data-elfsight-app-lazy></div>';
 
 export async function InstagramFeedSection() {
-  const showWidget = hasInstagramWidgetConfig();
-  const debugInfo = getInstagramWidgetDebugInfo();
-  const properties =
-    !showWidget && instagramWidgetConfig.fallbackMode === "properties"
-      ? await getPublishedProperties()
-      : [];
-
   return (
-    <section className="bg-surface">
+    <section className="bg-surface" data-instagram-mode="external">
       <div className="container-page py-14">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
           <div>
@@ -32,6 +23,7 @@ export async function InstagramFeedSection() {
               propiedades.
             </p>
           </div>
+
           <div className="lg:text-right">
             <Link
               href="https://www.instagram.com/victorabadieinmo"
@@ -44,24 +36,12 @@ export async function InstagramFeedSection() {
           </div>
         </div>
 
-        {showWidget ? (
-          <InstagramExternalWidget
-            provider={instagramWidgetConfig.provider}
-            scriptSrc={instagramWidgetConfig.scriptSrc}
-            containerHtml={instagramWidgetConfig.containerHtml}
-            rawEmbedHtml={instagramWidgetConfig.rawEmbedHtml}
-          />
-        ) : (
-          <InstagramShowcase properties={properties} compact />
-        )}
-
-        {debugInfo.debugEnabled ? (
-  <p className="mt-3 text-xs font-semibold text-muted">
-    Instagram widget: enabled={String(debugInfo.enabled)} | provider=
-    {debugInfo.provider} | container={String(debugInfo.hasContainerHtml)} |
-    script={String(debugInfo.hasScriptSrc)}
-  </p>
-) : null}
+        <InstagramExternalWidget
+          provider="elfsight"
+          scriptSrc={ELFSIGHT_SCRIPT_SRC}
+          containerHtml={ELFSIGHT_CONTAINER_HTML}
+          rawEmbedHtml=""
+        />
       </div>
     </section>
   );

@@ -21,25 +21,29 @@ function parseEnabled(value: string | undefined) {
     return defaultInstagramWidgetConfig.enabled;
   }
 
-  return value.toLowerCase() === "true";
+  return value.trim().toLowerCase() === "true";
 }
 
 function parseProvider(value: string | undefined): InstagramWidgetProvider {
+  const cleanValue = value?.trim();
+
   if (
-    value === "elfsight" ||
-    value === "taggbox" ||
-    value === "flockler" ||
-    value === "custom"
+    cleanValue === "elfsight" ||
+    cleanValue === "taggbox" ||
+    cleanValue === "flockler" ||
+    cleanValue === "custom"
   ) {
-    return value;
+    return cleanValue;
   }
 
   return defaultInstagramWidgetConfig.provider;
 }
 
 function parseFallbackMode(value: string | undefined): InstagramFallbackMode {
-  if (value === "visual" || value === "properties") {
-    return value;
+  const cleanValue = value?.trim();
+
+  if (cleanValue === "visual" || cleanValue === "properties") {
+    return cleanValue;
   }
 
   return defaultInstagramWidgetConfig.fallbackMode;
@@ -78,6 +82,7 @@ export function getInstagramWidgetDebugInfo() {
     hasRawEmbedHtml: Boolean(instagramWidgetConfig.rawEmbedHtml),
     fallbackMode: instagramWidgetConfig.fallbackMode,
     debugEnabled:
-      process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG?.toLowerCase() === "true",
+      process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG?.trim().toLowerCase() ===
+      "true",
   };
 }
