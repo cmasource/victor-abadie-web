@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   },
   description: seoConfig.defaultDescription,
   keywords: seoConfig.keywords,
+  verification: {
+    google: "VHzdPYozBCuDkPaiYt2Kp9JCP8FcV75lB-gLZV0qdGs",
+  },
   openGraph: {
     title: seoConfig.defaultTitle,
     description: seoConfig.defaultDescription,
