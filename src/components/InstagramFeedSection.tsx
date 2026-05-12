@@ -2,6 +2,7 @@ import Link from "next/link";
 import { InstagramExternalWidget } from "@/components/InstagramExternalWidget";
 import { InstagramShowcase } from "@/components/InstagramShowcase";
 import {
+  getInstagramWidgetDebugInfo,
   hasInstagramWidgetConfig,
   instagramWidgetConfig,
 } from "@/config/instagramWidget";
@@ -9,6 +10,7 @@ import { getPublishedProperties } from "@/lib/propertiesRepository";
 
 export async function InstagramFeedSection() {
   const showWidget = hasInstagramWidgetConfig();
+  const debugInfo = getInstagramWidgetDebugInfo();
   const properties =
     !showWidget && instagramWidgetConfig.fallbackMode === "properties"
       ? await getPublishedProperties()
@@ -52,6 +54,14 @@ export async function InstagramFeedSection() {
         ) : (
           <InstagramShowcase properties={properties} compact />
         )}
+
+        {instagramWidgetConfig.debug ? (
+          <p className="mt-3 text-xs font-semibold text-muted">
+            Instagram widget: enabled={String(debugInfo.enabled)} | provider=
+            {debugInfo.provider} | container={String(debugInfo.hasContainerHtml)} |
+            script={String(debugInfo.hasScriptSrc)}
+          </p>
+        ) : null}
       </div>
     </section>
   );

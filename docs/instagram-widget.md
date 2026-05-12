@@ -1,6 +1,6 @@
 # Instagram widget externo
 
-Este sprint deja preparada la sección “Novedades en Instagram” para mostrar un feed real mediante un proveedor externo como Elfsight, Taggbox o Flockler.
+Este sprint deja preparada la sección "Novedades en Instagram" para mostrar un feed real mediante un proveedor externo como Elfsight, Taggbox o Flockler.
 
 ## Qué resuelve
 
@@ -35,7 +35,7 @@ Campos:
 - `rawEmbedHtml`: bloque completo opcional del proveedor.
 - `fallbackMode`: `properties` o `visual`.
 
-Las variables `NEXT_PUBLIC_*` tienen prioridad sobre la configuración del archivo.
+El proyecto trae un default activo para Elfsight porque el código no contiene secretos. Las variables `NEXT_PUBLIC_*` tienen prioridad sobre la configuración del archivo.
 
 No pegues secretos. Estas variables son públicas porque se envían al navegador.
 
@@ -47,7 +47,7 @@ No pegues secretos. Estas variables son públicas porque se envían al navegador
 
 ```txt
 scriptSrc:
-https://static.elfsight.com/platform/platform.js
+https://elfsightcdn.com/platform.js
 ```
 
 ```html
@@ -63,7 +63,7 @@ Ejemplo local:
 ```env
 NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED=true
 NEXT_PUBLIC_INSTAGRAM_WIDGET_PROVIDER=elfsight
-NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC=https://static.elfsight.com/platform/platform.js
+NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC=https://elfsightcdn.com/platform.js
 NEXT_PUBLIC_INSTAGRAM_WIDGET_CONTAINER_HTML=<div class="elfsight-app-XXXX" data-elfsight-app-lazy></div>
 ```
 
@@ -90,16 +90,32 @@ Ir a:
 Vercel > Project > Settings > Environment Variables
 ```
 
-Agregar:
+Agregar solo si querés sobrescribir el default:
 
 ```env
 NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED=true
 NEXT_PUBLIC_INSTAGRAM_WIDGET_PROVIDER=elfsight
-NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC=https://static.elfsight.com/platform/platform.js
+NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC=https://elfsightcdn.com/platform.js
 NEXT_PUBLIC_INSTAGRAM_WIDGET_CONTAINER_HTML=<div class="elfsight-app-..." data-elfsight-app-lazy></div>
 ```
 
 Después de cambiar variables en Vercel, hacer redeploy.
+
+## Debug opcional
+
+Para diagnosticar producción sin exponer HTML completo:
+
+```env
+NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG=true
+```
+
+Esto muestra debajo de la sección Instagram una línea como:
+
+```txt
+Instagram widget: enabled=true | provider=elfsight | container=true | script=true
+```
+
+Desactivarlo al terminar la prueba.
 
 ## Volver al fallback
 
@@ -109,7 +125,7 @@ Para desactivar el widget real:
 NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED=false
 ```
 
-O borrar las variables del widget y redeployar.
+Luego redeployar. La sección vuelve a mostrar la grilla visual fallback.
 
 ## Seguridad y mantenimiento
 
@@ -124,15 +140,17 @@ O borrar las variables del widget y redeployar.
 
 ### No se ve el widget
 
-- Revisar que `NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED=true`.
+- Revisar que `NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED` no esté en `false`.
 - Revisar que `scriptSrc` y `containerHtml` estén completos.
+- Activar temporalmente `NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG=true`.
 - Reiniciar el servidor local o redeployar en Vercel.
 
 ### Se ve en local pero no en Vercel
 
-- Confirmar que las variables estén cargadas en Vercel.
+- Confirmar que las variables estén cargadas en Vercel si se usan overrides.
 - Hacer redeploy después de agregarlas.
 - Revisar restricciones del proveedor por dominio.
+- Verificar en Elements que exista el `div` `elfsight-app-*`.
 
 ### Se ve en desktop pero no en mobile
 
