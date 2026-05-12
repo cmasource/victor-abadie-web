@@ -7,6 +7,7 @@ const adminLinks = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/propiedades", label: "Propiedades" },
   { href: "/admin/propiedades/nueva", label: "Nueva propiedad" },
+  { href: "/admin/importar-instagram", label: "Importar Instagram" },
   { href: "/admin/mi-cuenta", label: "Mi cuenta" },
   { href: "/", label: "Ver sitio" },
 ];

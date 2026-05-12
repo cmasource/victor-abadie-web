@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { NotAuthorized } from "@/components/admin/NotAuthorized";
@@ -25,14 +26,20 @@ export default async function AdminLoginPage() {
     <main className="min-h-screen bg-surface">
       <div className="container-page flex min-h-screen items-center justify-center py-12">
         <div className="w-full max-w-md rounded-lg border border-black/5 bg-white p-8 shadow-xl">
-          <Image
-            src="/brand/logo-horizontal.jpg"
-            alt="Víctor Abadie Inmobiliaria"
-            width={260}
-            height={68}
-            className="mb-8 h-14 w-auto object-contain"
-            priority
-          />
+          <Link
+            href="/"
+            aria-label="Volver al inicio"
+            className="mx-auto mb-8 inline-flex justify-center"
+          >
+            <Image
+              src="/brand/logo-horizontal.jpg"
+              alt="Víctor Abadie Inmobiliaria"
+              width={260}
+              height={68}
+              className="h-14 w-auto object-contain"
+              priority
+            />
+          </Link>
           <p className="text-sm font-black uppercase tracking-[0.18em] text-brand-dark">
             Panel privado
           </p>

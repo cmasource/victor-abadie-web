@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import {
   updateProperty,
   uploadPropertyImages,
 } from "@/lib/adminPropertiesClient";
+import type { InstagramPropertyDraft } from "@/lib/instagramPropertyParser";
 import type {
   Operation,
   Property,
@@ -73,7 +74,7 @@ function parseAreaValue(value?: string | null): {
     };
   }
 
-  const customMatch = normalized.match(/^(.*?)\s+([a-zA-ZáéíóúÁÉÍÓÚñÑ.]+)$/);
+  const customMatch = normalized.match(/^(.*?)\s+([\p{L}.]+)$/u);
   if (customMatch && /\d/.test(customMatch[1])) {
     return {
       value: customMatch[1].trim(),
@@ -99,51 +100,110 @@ function buildAreaValue(value: string, unit: AreaUnit, customUnit: string) {
   return `${cleanValue} ${unit}`;
 }
 
+function toAreaUnit(value?: string): AreaUnit {
+  return areaUnits.includes(value as AreaUnit) ? (value as AreaUnit) : "m²";
+}
+
+function readPendingInstagramDraft(property?: Property) {
+  if (property || typeof window === "undefined") {
+    return null;
+  }
+
+  const rawDraft = window.sessionStorage.getItem("pendingInstagramPropertyDraft");
+  if (!rawDraft) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(rawDraft) as Partial<InstagramPropertyDraft>;
+  } catch {
+    window.sessionStorage.removeItem("pendingInstagramPropertyDraft");
+    return null;
+  }
+}
+
 export function PropertyForm({ property }: PropertyFormProps) {
   const router = useRouter();
+  const pendingDraft = useMemo(() => readPendingInstagramDraft(property), [property]);
   const parsedArea = useMemo(() => parseAreaValue(property?.area), [property?.area]);
   const parsedLotArea = useMemo(
     () => parseAreaValue(property?.lotArea),
     [property?.lotArea],
   );
-  const [operation, setOperation] = useState<Operation>(property?.operation || "Venta");
-  const [type, setType] = useState<PropertyType>(property?.type || "Casa");
-  const [title, setTitle] = useState(property?.title || "");
-  const [slug, setSlug] = useState(property?.slug || "");
-  const [city, setCity] = useState(property?.city || "");
-  const [neighborhood, setNeighborhood] = useState(property?.neighborhood || "");
-  const [location, setLocation] = useState(property?.location || "");
+  const [operation, setOperation] = useState<Operation>(
+    property?.operation ||
+      (pendingDraft?.operation && operations.includes(pendingDraft.operation)
+        ? pendingDraft.operation
+        : "Venta"),
+  );
+  const [type, setType] = useState<PropertyType>(
+    property?.type ||
+      (pendingDraft?.type && types.includes(pendingDraft.type) ? pendingDraft.type : "Casa"),
+  );
+  const [title, setTitle] = useState(property?.title || pendingDraft?.title || "");
+  const [slug, setSlug] = useState(
+    property?.slug ||
+      pendingDraft?.suggestedSlug ||
+      (pendingDraft?.title ? slugify(pendingDraft.title) : ""),
+  );
+  const [city, setCity] = useState(property?.city || pendingDraft?.city || "");
+  const [neighborhood, setNeighborhood] = useState(
+    property?.neighborhood || pendingDraft?.neighborhood || "",
+  );
+  const [location, setLocation] = useState(property?.location || pendingDraft?.location || "");
   const [status, setStatus] = useState<PropertyStatus>(property?.status || "Disponible");
-  const [price, setPrice] = useState(property?.price || "Consultar precio");
-  const [numericPrice, setNumericPrice] = useState(property?.numericPrice?.toString() || "");
-  const [currency, setCurrency] = useState(property?.currency || "Consultar");
-  const [bedrooms, setBedrooms] = useState(property?.bedrooms?.toString() || "");
-  const [bathrooms, setBathrooms] = useState(property?.bathrooms?.toString() || "");
-  const [rooms, setRooms] = useState(property?.rooms?.toString() || "");
-  const [areaValue, setAreaValue] = useState(parsedArea.value);
-  const [areaUnit, setAreaUnit] = useState<AreaUnit>(parsedArea.unit);
+  const [price, setPrice] = useState(
+    property?.price || pendingDraft?.price || "Consultar precio",
+  );
+  const [numericPrice, setNumericPrice] = useState(
+    property?.numericPrice?.toString() || pendingDraft?.numericPrice?.toString() || "",
+  );
+  const [currency, setCurrency] = useState(property?.currency || pendingDraft?.currency || "Consultar");
+  const [bedrooms, setBedrooms] = useState(
+    property?.bedrooms?.toString() || pendingDraft?.bedrooms?.toString() || "",
+  );
+  const [bathrooms, setBathrooms] = useState(
+    property?.bathrooms?.toString() || pendingDraft?.bathrooms?.toString() || "",
+  );
+  const [rooms, setRooms] = useState(
+    property?.rooms?.toString() || pendingDraft?.rooms?.toString() || "",
+  );
+  const [areaValue, setAreaValue] = useState(parsedArea.value || pendingDraft?.area || "");
+  const [areaUnit, setAreaUnit] = useState<AreaUnit>(
+    property?.area ? parsedArea.unit : toAreaUnit(pendingDraft?.areaUnit),
+  );
   const [areaCustomUnit, setAreaCustomUnit] = useState(parsedArea.customUnit);
-  const [lotAreaValue, setLotAreaValue] = useState(parsedLotArea.value);
-  const [lotAreaUnit, setLotAreaUnit] = useState<AreaUnit>(parsedLotArea.unit);
+  const [lotAreaValue, setLotAreaValue] = useState(
+    parsedLotArea.value || pendingDraft?.lotArea || "",
+  );
+  const [lotAreaUnit, setLotAreaUnit] = useState<AreaUnit>(
+    property?.lotArea ? parsedLotArea.unit : toAreaUnit(pendingDraft?.lotAreaUnit),
+  );
   const [lotAreaCustomUnit, setLotAreaCustomUnit] = useState(
     parsedLotArea.customUnit,
   );
-  const [garage, setGarage] = useState(property?.garage || false);
+  const [garage, setGarage] = useState(property?.garage || Boolean(pendingDraft?.garage));
   const [published, setPublished] = useState(property?.published ?? true);
   const [featured, setFeatured] = useState(property?.featured || false);
-  const [description, setDescription] = useState(property?.description || "");
-  const [excerpt, setExcerpt] = useState(property?.excerpt || "");
-  const [features, setFeatures] = useState(property?.features.join(", ") || "");
+  const [description, setDescription] = useState(
+    property?.description || pendingDraft?.description || "",
+  );
+  const [excerpt, setExcerpt] = useState(property?.excerpt || pendingDraft?.excerpt || "");
+  const [features, setFeatures] = useState(
+    property?.features.join(", ") || pendingDraft?.features?.join(", ") || "",
+  );
   const [tags, setTags] = useState(property?.tags.join(", ") || "");
   const [internalNotes, setInternalNotes] = useState("");
-  const [instagramCaption, setInstagramCaption] = useState("");
+  const [instagramCaption, setInstagramCaption] = useState(pendingDraft?.instagramCaption || "");
   const [titleSuggestion, setTitleSuggestion] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [importNotice] = useState(Boolean(pendingDraft));
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   const currentSlug = useMemo(() => slug || slugify(title), [slug, title]);
+
 
   function handleTitleChange(value: string) {
     setTitle(value);
@@ -195,7 +255,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
     setSuccess("");
 
     if (!title.trim() || !currentSlug.trim()) {
-      setError("Título y slug son obligatorios.");
+      setError("T?tulo y slug son obligatorios.");
       return;
     }
 
@@ -208,16 +268,16 @@ export function PropertyForm({ property }: PropertyFormProps) {
 
       if (selectedImages.length > 0) {
         try {
-          // TODO: sumar compresión/redimensionado antes del upload para fotos pesadas.
+          // TODO: sumar compresi?n/redimensionado antes del upload para fotos pesadas.
           await uploadPropertyImages(saved.id, saved.slug, selectedImages);
           setSelectedImages([]);
         } catch (uploadException) {
           const uploadMessage =
             uploadException instanceof Error
               ? uploadException.message
-              : "Error desconocido al subir imágenes.";
+              : "Error desconocido al subir im?genes.";
           setError(
-            `La propiedad se guardó, pero no se pudieron subir las imágenes: ${uploadMessage}. Podés reintentar desde /admin/propiedades/${saved.id}/editar.`,
+            `La propiedad se guard?, pero no se pudieron subir las im?genes: ${uploadMessage}. Pod?s reintentar desde /admin/propiedades/${saved.id}/editar.`,
           );
           return;
         }
@@ -226,8 +286,9 @@ export function PropertyForm({ property }: PropertyFormProps) {
       setSuccess(
         property
           ? "Propiedad actualizada correctamente."
-          : "Propiedad guardada e imágenes subidas correctamente.",
+          : "Propiedad guardada e im?genes subidas correctamente.",
       );
+      window.sessionStorage.removeItem("pendingInstagramPropertyDraft");
       window.setTimeout(() => {
         router.replace(`/admin/propiedades/${saved.id}/editar`);
         router.refresh();
@@ -269,13 +330,19 @@ export function PropertyForm({ property }: PropertyFormProps) {
         onSubmit={handleSubmit}
         className="grid min-w-0 gap-5 rounded-lg border border-black/5 bg-white p-5 shadow-sm lg:col-span-8"
       >
+        {importNotice ? (
+          <p className="rounded-md bg-brand/10 px-4 py-3 text-sm font-bold text-brand-dark">
+            Datos importados desde copy de Instagram. Revisalos antes de guardar.
+          </p>
+        ) : null}
+
         <div className="grid gap-4 md:grid-cols-3">
-          <Select label="Operación" value={operation} options={operations} onChange={setOperation} />
+          <Select label="Operaci?n" value={operation} options={operations} onChange={setOperation} />
           <Select label="Tipo" value={type} options={types} onChange={setType} />
           <Select label="Estado" value={status} options={statuses} onChange={setStatus} />
         </div>
 
-        <Field label="Título" value={title} onChange={handleTitleChange} required />
+        <Field label="T?tulo" value={title} onChange={handleTitleChange} required />
         <Field label="Slug" value={currentSlug} onChange={setSlug} required />
 
         <div className="grid gap-4 md:grid-cols-3">
@@ -348,12 +415,12 @@ export function PropertyForm({ property }: PropertyFormProps) {
 
         <Textarea label="Descripción" value={description} onChange={setDescription} />
         <Textarea label="Extracto corto" value={excerpt || ""} onChange={setExcerpt} rows={3} />
-        <Field label="Características separadas por coma" value={features} onChange={setFeatures} />
+        <Field label="Caracter?sticas separadas por coma" value={features} onChange={setFeatures} />
         <Field label="Tags separados por coma" value={tags} onChange={setTags} />
 
         <div className="rounded-lg bg-surface p-4">
           <Textarea
-            label="Notas internas / descripción desordenada"
+            label="Notas internas / descripci?n desordenada"
             value={internalNotes}
             onChange={setInternalNotes}
             rows={4}
@@ -369,7 +436,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
             <div className="mt-4 rounded-md bg-white p-4 text-sm leading-6 text-muted">
               {titleSuggestion ? (
                 <>
-                  <p className="font-black text-[#111111]">Título sugerido</p>
+                  <p className="font-black text-[#111111]">T?tulo sugerido</p>
                   <p className="mt-1">{titleSuggestion}</p>
                 </>
               ) : null}
@@ -404,9 +471,9 @@ export function PropertyForm({ property }: PropertyFormProps) {
             ? "Guardando..."
             : property
               ? selectedImages.length > 0
-                ? "Guardar cambios y subir imágenes"
+                ? "Guardar cambios y subir im?genes"
                 : "Guardar cambios"
-              : "Guardar propiedad y subir imágenes"}
+              : "Guardar propiedad y subir im?genes"}
         </button>
       </form>
 
@@ -579,3 +646,4 @@ function Checkbox({ label, checked, onChange }: CheckboxProps) {
     </label>
   );
 }
+
