@@ -202,7 +202,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const currentSlug = useMemo(() => slug || slugify(title), [slug, title]);
+  const currentSlug = useMemo(() => slugify(slug || title), [slug, title]);
 
 
   function handleTitleChange(value: string) {
@@ -343,7 +343,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
         </div>
 
         <Field label="T?tulo" value={title} onChange={handleTitleChange} required />
-        <Field label="Slug" value={currentSlug} onChange={setSlug} required />
+        <Field label="Slug" value={currentSlug} onChange={(value) => setSlug(slugify(value))} required />
 
         <div className="grid gap-4 md:grid-cols-3">
           <Field label="Localidad" value={city} onChange={setCity} />

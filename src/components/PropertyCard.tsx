@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatArea, formatPrice } from "@/lib/formatters";
+import { buildPropertyImageAlt } from "@/lib/seo";
 import { propertyWhatsAppLink } from "@/lib/whatsapp";
 import type { Property } from "@/types/property";
 
@@ -9,13 +10,15 @@ type PropertyCardProps = {
 };
 
 export function PropertyCard({ property }: PropertyCardProps) {
+  const imageAlt = buildPropertyImageAlt(property);
+
   return (
     <article className="group overflow-hidden rounded-lg border border-black/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
       <Link href={`/propiedades/${property.slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-surface">
           <Image
             src={property.mainImage}
-            alt={property.title}
+            alt={imageAlt}
             fill
             unoptimized
             className="object-cover transition duration-500 group-hover:scale-105"

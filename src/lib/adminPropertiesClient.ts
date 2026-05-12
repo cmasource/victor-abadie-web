@@ -1,5 +1,6 @@
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { mapSupabaseProperty, propertyInputToSupabase } from "@/lib/propertyMappers";
+import { slugify } from "@/lib/propertyCommercialBuilder";
 import type {
   PropertyInput,
   SupabasePropertyRow,
@@ -98,7 +99,7 @@ export async function uploadPropertyImages(
     propertyData?.main_image_url ||
       existingImages?.some((image) => Boolean(image.is_main)),
   );
-  const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]+/g, "-") || propertyId;
+  const safeSlug = slugify(slug) || propertyId;
   const timestamp = Date.now();
 
   for (const [index, file] of files.entries()) {
@@ -142,7 +143,7 @@ export async function uploadPropertyImages(
         property_id: propertyId,
         url: publicUrl,
         path,
-        alt: slug,
+        alt: safeSlug,
         sort_order: (existingImages?.length || 0) + uploaded.length,
         is_main: shouldBeMain,
       })

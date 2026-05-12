@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import { BUSINESS_NAME, SITE_URL } from "@/lib/site";
+import { seoConfig } from "@/config/seo";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -10,27 +10,34 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: `${BUSINESS_NAME} | Propiedades en San Luis`,
-  description:
-    "Casas, terrenos, departamentos y oportunidades inmobiliarias en San Luis, Juana Koslay, La Punta, El Volcán, Trapiche y zonas cercanas.",
-  keywords: [
-    "inmobiliaria San Luis",
-    "propiedades en San Luis",
-    "casas en venta San Luis",
-    "terrenos San Luis",
-    "departamentos San Luis",
-    "inmobiliaria Juana Koslay",
-    "Victor Abadie Inmobiliaria",
-  ],
+  metadataBase: new URL(seoConfig.siteUrl),
+  title: {
+    default: seoConfig.defaultTitle,
+    template: `%s | ${seoConfig.siteName}`,
+  },
+  description: seoConfig.defaultDescription,
+  keywords: seoConfig.keywords,
   openGraph: {
-    title: `${BUSINESS_NAME} | Propiedades en San Luis`,
-    description:
-      "Casas, terrenos, departamentos y oportunidades inmobiliarias en San Luis, Juana Koslay, La Punta, El Volcán, Trapiche y zonas cercanas.",
-    url: SITE_URL,
-    siteName: BUSINESS_NAME,
-    locale: "es_AR",
+    title: seoConfig.defaultTitle,
+    description: seoConfig.defaultDescription,
+    url: seoConfig.siteUrl,
+    siteName: seoConfig.siteName,
+    locale: seoConfig.locale,
     type: "website",
+    images: [
+      {
+        url: "/brand/logo-horizontal.jpg",
+        width: 1200,
+        height: 630,
+        alt: seoConfig.siteName,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: seoConfig.defaultTitle,
+    description: seoConfig.defaultDescription,
+    images: ["/brand/logo-horizontal.jpg"],
   },
   icons: {
     icon: "/brand/favicon.png",

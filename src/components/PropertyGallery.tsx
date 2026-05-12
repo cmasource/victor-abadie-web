@@ -1,19 +1,21 @@
 import Image from "next/image";
+import { buildPropertyImageAlt } from "@/lib/seo";
+import type { Property } from "@/types/property";
 
 type PropertyGalleryProps = {
-  title: string;
-  images: string[];
+  property: Property;
 };
 
-export function PropertyGallery({ title, images }: PropertyGalleryProps) {
-  const [mainImage, ...rest] = images;
+export function PropertyGallery({ property }: PropertyGalleryProps) {
+  const [mainImage, ...rest] = property.images;
+  const imageAlt = buildPropertyImageAlt(property);
 
   return (
     <div className="grid gap-4">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-surface md:aspect-[16/9]">
         <Image
           src={mainImage}
-          alt={title}
+          alt={imageAlt}
           fill
           unoptimized
           className="object-cover"
@@ -22,14 +24,14 @@ export function PropertyGallery({ title, images }: PropertyGalleryProps) {
       </div>
       {rest.length > 0 ? (
         <div className="grid grid-cols-3 gap-3">
-          {images.map((image, index) => (
+          {property.images.map((image, index) => (
             <div
               key={`${image}-${index}`}
               className="relative aspect-[4/3] overflow-hidden rounded-md border border-black/5 bg-surface"
             >
               <Image
                 src={image}
-                alt={`${title} imagen ${index + 1}`}
+                alt={`${imageAlt} - imagen ${index + 1}`}
                 fill
                 unoptimized
                 className="object-cover"

@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { InstagramWidgetProvider } from "@/config/instagramWidget";
 
 type InstagramExternalWidgetProps = {
@@ -23,14 +23,9 @@ export function InstagramExternalWidget({
   containerHtml = "",
   rawEmbedHtml = "",
 }: InstagramExternalWidgetProps) {
-  const [mounted, setMounted] = useState(false);
   const parsedEmbed = useMemo(() => parseEmbedHtml(rawEmbedHtml), [rawEmbedHtml]);
   const html = containerHtml || parsedEmbed.html;
   const scripts = Array.from(new Set([scriptSrc, ...parsedEmbed.scripts].filter(Boolean)));
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!html && scripts.length === 0) {
     return null;
@@ -40,7 +35,7 @@ export function InstagramExternalWidget({
     <div className="mt-8 overflow-hidden rounded-lg border border-black/5 bg-white p-4 shadow-sm">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm font-bold text-muted">
-          {mounted ? "Publicaciones de Instagram" : "Cargando publicaciones de Instagram..."}
+          Publicaciones de Instagram
         </p>
         <Link
           href="https://www.instagram.com/victorabadieinmo"

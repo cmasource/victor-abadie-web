@@ -4,11 +4,15 @@ import { ContactCTA } from "@/components/ContactCTA";
 import { PropertyFilters } from "@/components/PropertyFilters";
 import { SectionTitle } from "@/components/SectionTitle";
 import { getPublishedProperties } from "@/lib/propertiesRepository";
+import { buildCanonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Propiedades en venta en San Luis | Víctor Abadie Inmobiliaria",
+  title: "Propiedades en venta en San Luis",
   description:
-    "Catálogo de casas, departamentos, terrenos y locales en San Luis, Juana Koslay, La Punta, El Volcán, Trapiche y Nogolí.",
+    "Catálogo de casas, terrenos, departamentos, campos, desarrollos e inversiones disponibles en San Luis y zonas cercanas.",
+  alternates: {
+    canonical: buildCanonicalUrl("/propiedades"),
+  },
 };
 
 export default async function PropertiesPage() {
@@ -22,6 +26,7 @@ export default async function PropertiesPage() {
             eyebrow="Catálogo"
             title="Propiedades en venta en San Luis"
             description="Filtrá por tipo, localidad y operación para encontrar rápidamente casas, departamentos, terrenos y locales."
+            headingLevel="h1"
           />
         </div>
       </section>

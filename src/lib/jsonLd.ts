@@ -1,11 +1,5 @@
-import {
-  BUSINESS_LICENSE,
-  BUSINESS_NAME,
-  FACEBOOK_URL,
-  INSTAGRAM_URL,
-  SERVICE_AREAS,
-  SITE_URL,
-} from "@/lib/site";
+import { seoConfig } from "@/config/seo";
+import { buildCanonicalUrl, buildPropertySeo } from "@/lib/seo";
 import { DISPLAY_PHONE, DISPLAY_WHATSAPP } from "@/lib/whatsapp";
 import type { Property } from "@/types/property";
 
@@ -13,21 +7,25 @@ export function businessJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    name: BUSINESS_NAME,
-    url: SITE_URL,
-    image: `${SITE_URL}/brand/logo-horizontal.jpg`,
-    telephone: `+54 ${DISPLAY_PHONE}`,
-    areaServed: SERVICE_AREAS.map((area) => ({
+    name: seoConfig.businessName,
+    legalName: seoConfig.businessLegalName,
+    description:
+      "Inmobiliaria en San Luis especializada en casas, terrenos, departamentos, inversiones y oportunidades inmobiliarias.",
+    url: seoConfig.siteUrl,
+    image: buildCanonicalUrl("/brand/logo-horizontal.jpg"),
+    telephone: "+54 266 4572176",
+    areaServed: seoConfig.serviceAreas.map((area) => ({
       "@type": "Place",
       name: area,
     })),
     address: {
       "@type": "PostalAddress",
-      addressLocality: "San Luis",
-      addressCountry: "AR",
+      addressLocality: seoConfig.city,
+      addressRegion: seoConfig.province,
+      addressCountry: seoConfig.country,
     },
-    identifier: BUSINESS_LICENSE,
-    sameAs: [INSTAGRAM_URL, FACEBOOK_URL],
+    identifier: seoConfig.businessLicense,
+    sameAs: seoConfig.socialLinks,
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -48,27 +46,35 @@ export function businessJsonLd() {
 }
 
 export function propertyJsonLd(property: Property) {
-  return {
+  const seo = buildPropertySeo(property);
+  const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: property.title,
-    description: `${property.type} en ${property.location}. Consultá por esta propiedad en Víctor Abadie Inmobiliaria, San Luis.`,
-    image: property.images.map((image) => `${SITE_URL}${image}`),
-    url: `${SITE_URL}/propiedades/${property.slug}`,
+    description: seo.description,
+    image: property.images.map((image) =>
+      image.startsWith("http") ? image : buildCanonicalUrl(image),
+    ),
+    url: seo.canonical,
     category: property.type,
     brand: {
       "@type": "Brand",
-      name: BUSINESS_NAME,
+      name: seoConfig.businessName,
     },
-    offers: {
+  };
+
+  if (property.numericPrice && property.numericPrice > 0) {
+    jsonLd.offers = {
       "@type": "Offer",
       availability:
         property.status === "Disponible"
           ? "https://schema.org/InStock"
           : "https://schema.org/LimitedAvailability",
-      price: property.numericPrice ?? 0,
+      price: property.numericPrice,
       priceCurrency: property.currency === "U$S" ? "USD" : property.currency || "ARS",
-      url: `${SITE_URL}/propiedades/${property.slug}`,
-    },
-  };
+      url: seo.canonical,
+    };
+  }
+
+  return jsonLd;
 }

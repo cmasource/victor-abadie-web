@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { ContactCTA } from "@/components/ContactCTA";
 import { LeadForm } from "@/components/LeadForm";
 import { SectionTitle } from "@/components/SectionTitle";
+import { buildCanonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Vendé tu propiedad en San Luis | Víctor Abadie Inmobiliaria",
+  title: "Vendé tu propiedad en San Luis",
   description:
-    "Tasación, difusión comercial y seguimiento personalizado para vender propiedades en San Luis y zonas cercanas.",
+    "Tasación, publicación y acompañamiento comercial para vender tu propiedad en San Luis con Víctor Abadie Inmobiliaria.",
+  alternates: {
+    canonical: buildCanonicalUrl("/vende-tu-propiedad"),
+  },
 };
 
 const benefits = [
@@ -32,8 +36,9 @@ export default function SellPropertyPage() {
           <div>
             <SectionTitle
               eyebrow="Para propietarios"
-              title="Vendé tu propiedad en San Luis con Víctor Abadie Inmobiliaria"
+              title="Vendé tu propiedad en San Luis"
               description="Una presentación comercial clara, atención directa y acompañamiento local para que tu propiedad llegue mejor a compradores e interesados."
+              headingLevel="h1"
             />
             <div className="mt-8 grid gap-3">
               {benefits.map((benefit) => (

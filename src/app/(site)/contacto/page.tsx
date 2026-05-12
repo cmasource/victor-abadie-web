@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LeadForm } from "@/components/LeadForm";
+import { buildCanonicalUrl } from "@/lib/seo";
 import { FACEBOOK_URL, INSTAGRAM_URL, SERVICE_AREAS } from "@/lib/site";
 import {
   DISPLAY_PHONE,
@@ -10,9 +11,14 @@ import {
 } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contacto | Víctor Abadie Inmobiliaria",
+  title: {
+    absolute: "Contacto | Víctor Abadie Inmobiliaria",
+  },
   description:
-    "Contactá a Víctor Abadie Inmobiliaria por WhatsApp, teléfono, Instagram o Facebook para consultar propiedades en San Luis.",
+    "Contactá a Víctor Abadie Inmobiliaria para consultar por propiedades, ventas, alquileres o tasaciones en San Luis.",
+  alternates: {
+    canonical: buildCanonicalUrl("/contacto"),
+  },
 };
 
 const contactCards = [
@@ -31,7 +37,7 @@ export default function ContactPage() {
             Contacto
           </p>
           <h1 className="mt-3 text-4xl font-black leading-tight text-[#111111] md:text-5xl">
-            Hablemos de tu próxima propiedad
+            Contacto
           </h1>
           <p className="mt-5 text-base leading-8 text-muted">
             Consultá por casas, terrenos, departamentos, locales o por la venta

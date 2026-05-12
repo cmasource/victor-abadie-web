@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ContactCTA } from "@/components/ContactCTA";
@@ -8,11 +9,23 @@ import { PropertyGrid } from "@/components/PropertyGrid";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SellPropertySection } from "@/components/SellPropertySection";
 import { businessJsonLd } from "@/lib/jsonLd";
+import { buildCanonicalUrl } from "@/lib/seo";
 import {
   getFeaturedProperties,
   getRecentProperties,
 } from "@/lib/propertiesRepository";
 import { generalWhatsAppLink } from "@/lib/whatsapp";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Víctor Abadie Inmobiliaria | Propiedades en San Luis",
+  },
+  description:
+    "Inmobiliaria en San Luis. Casas, terrenos, departamentos, inversiones y oportunidades en San Luis, Juana Koslay, La Punta, El Volcán y zonas cercanas.",
+  alternates: {
+    canonical: buildCanonicalUrl("/"),
+  },
+};
 
 const categories = [
   ["Casas", "Viviendas familiares en San Luis, Juana Koslay y zonas cercanas."],

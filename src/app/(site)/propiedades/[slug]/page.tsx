@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PropertyDetailPageProps) {
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
   if (!property) {
-    return {};
+    notFound();
   }
   return propertyMetadata(property);
 }
@@ -52,7 +52,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
         </Link>
 
         <div className="mt-6">
-          <PropertyGallery title={property.title} images={property.images} />
+          <PropertyGallery property={property} />
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">

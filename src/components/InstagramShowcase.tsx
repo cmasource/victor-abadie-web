@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { buildPropertyImageAlt } from "@/lib/seo";
 import type { Property } from "@/types/property";
 
 type InstagramShowcaseProps = {
@@ -52,6 +53,7 @@ export function InstagramShowcase({ properties = [], compact = false }: Instagra
     badge: property.type,
     title: property.title,
     detail: property.location || property.city || "San Luis",
+    alt: buildPropertyImageAlt(property),
   }));
   const posts = [...realPosts, ...fallbackPosts].slice(0, 6);
 
@@ -101,7 +103,11 @@ export function InstagramShowcase({ properties = [], compact = false }: Instagra
               <div className="relative aspect-square overflow-hidden bg-surface">
                 <Image
                   src={post.image}
-                  alt={post.title}
+                  alt={
+                    "alt" in post && typeof post.alt === "string"
+                      ? post.alt
+                      : `${post.title} - Víctor Abadie Inmobiliaria`
+                  }
                   fill
                   unoptimized
                   className="object-cover transition duration-500 group-hover:scale-105"
