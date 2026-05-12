@@ -1,4 +1,9 @@
-export type InstagramWidgetProvider = "elfsight" | "taggbox" | "flockler" | "custom";
+export type InstagramWidgetProvider =
+  | "elfsight"
+  | "taggbox"
+  | "flockler"
+  | "custom";
+
 export type InstagramFallbackMode = "properties" | "visual";
 
 const defaultInstagramWidgetConfig = {
@@ -9,11 +14,10 @@ const defaultInstagramWidgetConfig = {
     '<div class="elfsight-app-0a1b9bbd-6582-448f-a776-e85c07d90477" data-elfsight-app-lazy></div>',
   rawEmbedHtml: "",
   fallbackMode: "properties" as InstagramFallbackMode,
-  debug: false,
 };
 
 function parseEnabled(value: string | undefined) {
-  if (value === undefined) {
+  if (value === undefined || value.trim() === "") {
     return defaultInstagramWidgetConfig.enabled;
   }
 
@@ -21,7 +25,12 @@ function parseEnabled(value: string | undefined) {
 }
 
 function parseProvider(value: string | undefined): InstagramWidgetProvider {
-  if (value === "elfsight" || value === "taggbox" || value === "flockler" || value === "custom") {
+  if (
+    value === "elfsight" ||
+    value === "taggbox" ||
+    value === "flockler" ||
+    value === "custom"
+  ) {
     return value;
   }
 
@@ -36,29 +45,21 @@ function parseFallbackMode(value: string | undefined): InstagramFallbackMode {
   return defaultInstagramWidgetConfig.fallbackMode;
 }
 
-const hasWidgetEnvOverride = Boolean(
-  process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_PROVIDER !== undefined ||
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC !== undefined ||
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_CONTAINER_HTML !== undefined ||
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_RAW_HTML !== undefined,
-);
-
 export const instagramWidgetConfig = {
   enabled: parseEnabled(process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_ENABLED),
   provider: parseProvider(process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_PROVIDER),
   scriptSrc:
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC ??
-    (hasWidgetEnvOverride ? "" : defaultInstagramWidgetConfig.scriptSrc),
+    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_SCRIPT_SRC?.trim() ||
+    defaultInstagramWidgetConfig.scriptSrc,
   containerHtml:
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_CONTAINER_HTML ??
-    (hasWidgetEnvOverride ? "" : defaultInstagramWidgetConfig.containerHtml),
+    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_CONTAINER_HTML?.trim() ||
+    defaultInstagramWidgetConfig.containerHtml,
   rawEmbedHtml:
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_RAW_HTML ??
+    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_RAW_HTML?.trim() ||
     defaultInstagramWidgetConfig.rawEmbedHtml,
-  fallbackMode: parseFallbackMode(process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_FALLBACK_MODE),
-  debug:
-    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG?.toLowerCase() === "true" ||
-    defaultInstagramWidgetConfig.debug,
+  fallbackMode: parseFallbackMode(
+    process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_FALLBACK_MODE,
+  ),
 };
 
 export function hasInstagramWidgetConfig() {
@@ -75,9 +76,8 @@ export function getInstagramWidgetDebugInfo() {
     hasScriptSrc: Boolean(instagramWidgetConfig.scriptSrc),
     hasContainerHtml: Boolean(instagramWidgetConfig.containerHtml),
     hasRawEmbedHtml: Boolean(instagramWidgetConfig.rawEmbedHtml),
+    fallbackMode: instagramWidgetConfig.fallbackMode,
+    debugEnabled:
+      process.env.NEXT_PUBLIC_INSTAGRAM_WIDGET_DEBUG?.toLowerCase() === "true",
   };
-}
-
-if (process.env.NODE_ENV === "development") {
-  console.info("[instagram-widget]", getInstagramWidgetDebugInfo());
 }

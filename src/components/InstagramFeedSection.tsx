@@ -55,13 +55,13 @@ export async function InstagramFeedSection() {
           <InstagramShowcase properties={properties} compact />
         )}
 
-        {instagramWidgetConfig.debug ? (
-          <p className="mt-3 text-xs font-semibold text-muted">
-            Instagram widget: enabled={String(debugInfo.enabled)} | provider=
-            {debugInfo.provider} | container={String(debugInfo.hasContainerHtml)} |
-            script={String(debugInfo.hasScriptSrc)}
-          </p>
-        ) : null}
+        {debugInfo.debugEnabled ? (
+  <p className="mt-3 text-xs font-semibold text-muted">
+    Instagram widget: enabled={String(debugInfo.enabled)} | provider=
+    {debugInfo.provider} | container={String(debugInfo.hasContainerHtml)} |
+    script={String(debugInfo.hasScriptSrc)}
+  </p>
+) : null}
       </div>
     </section>
   );
