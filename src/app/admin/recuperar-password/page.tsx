@@ -13,11 +13,11 @@ export default function RecoverPasswordPage() {
             className="mx-auto mb-8 inline-flex justify-center"
           >
             <Image
-              src="/brand/logo-horizontal.jpg"
+              src="/brand/logo-horizontal-transparente.png"
               alt="Víctor Abadie Inmobiliaria"
               width={260}
               height={68}
-              className="h-14 w-auto object-contain"
+              className="h-12 w-auto object-contain"
               priority
             />
           </Link>

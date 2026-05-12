@@ -25,13 +25,12 @@ export function Header() {
           aria-label="Ir al inicio"
           onClick={() => setOpen(false)}
         >
-          {/* Si se incorpora un logo PNG con fondo transparente, reemplazar por "/brand/logo-horizontal-transparente.png". */}
           <Image
-            src="/brand/logo-horizontal.jpg"
+            src="/brand/logo-horizontal-transparente.png"
             alt={BUSINESS_NAME}
             width={380}
             height={96}
-            className="h-14 w-auto max-w-[220px] object-contain sm:h-16 sm:max-w-[300px] md:h-[72px] md:max-w-[380px]"
+            className="h-14 w-auto object-contain sm:h-16 md:h-[72px]"
             priority
           />
         </Link>

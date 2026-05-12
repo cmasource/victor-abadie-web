@@ -25,11 +25,11 @@ export function AdminShell({ children, email, role }: AdminShellProps) {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
           <Link href="/admin" className="flex items-center gap-3">
             <Image
-              src="/brand/logo-square.jpg"
+              src="/brand/logo-square-transparente.png"
               alt="Víctor Abadie Inmobiliaria"
               width={64}
               height={64}
-              className="h-12 w-12 rounded-md object-contain"
+              className="h-12 w-auto object-contain"
             />
             <span className="hidden min-w-0 sm:block">
               <span className="block text-sm font-black leading-tight text-[#111111]">

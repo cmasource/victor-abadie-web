@@ -8,13 +8,13 @@ export function Footer() {
     <footer className="border-t border-black/5 bg-[#111111] text-white">
       <div className="container-page grid gap-8 py-12 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
         <div>
-          <Link href="/" className="mb-5 inline-flex rounded-sm bg-white p-2">
+          <Link href="/" className="mb-5 inline-flex rounded-md bg-white px-3 py-2">
             <Image
               src="/brand/logo-horizontal.jpg"
               alt={BUSINESS_NAME}
               width={250}
               height={72}
-              className="h-14 w-auto object-contain"
+              className="h-16 w-auto object-contain"
             />
           </Link>
           <p className="max-w-xl text-sm leading-7 text-white/75">
