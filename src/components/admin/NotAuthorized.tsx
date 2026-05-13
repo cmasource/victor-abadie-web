@@ -11,12 +11,12 @@ export function NotAuthorized({ reason = "not-admin" }: NotAuthorizedProps) {
         Panel administrativo
       </p>
       <h1 className="mt-3 text-3xl font-black text-[#111111]">
-        {reason === "not-configured" ? "Supabase no está configurado" : "No autorizado"}
+        {reason === "not-configured" ? "Panel no disponible" : "No autorizado"}
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
         {reason === "not-configured"
-          ? "Agregá las variables NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY o NEXT_PUBLIC_SUPABASE_ANON_KEY en .env.local para habilitar el panel."
-          : "Tu usuario inició sesión, pero no está incluido en la tabla admin_users. Agregalo desde Supabase para administrar propiedades."}
+          ? "El panel administrativo no está disponible en este momento. Contactá al responsable técnico para revisar la configuración."
+          : "Tu usuario inició sesión, pero no tiene permisos para administrar propiedades. Contactá al responsable del sitio para solicitar acceso."}
       </p>
       <Link
         href="/"

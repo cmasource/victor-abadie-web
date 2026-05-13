@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { PropertyGrid } from "@/components/PropertyGrid";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SellPropertySection } from "@/components/SellPropertySection";
+import { TrackedWhatsAppLink } from "@/components/TrackedLinks";
 import { businessJsonLd } from "@/lib/jsonLd";
 import { buildCanonicalUrl } from "@/lib/seo";
 import {
@@ -74,7 +75,7 @@ export default async function Home() {
             description="Una selección de propiedades publicadas recientemente."
           />
           <div className="mt-8">
-            <PropertyGrid properties={recentProperties} />
+            <PropertyGrid properties={recentProperties} trackingSource="home" />
           </div>
         </div>
       </section>
@@ -86,7 +87,7 @@ export default async function Home() {
           description="Casas, terrenos, departamentos y oportunidades con contacto directo por WhatsApp."
         />
         <div className="mt-8">
-          <PropertyGrid properties={featuredProperties} />
+          <PropertyGrid properties={featuredProperties} trackingSource="home" />
         </div>
       </section>
 
@@ -131,14 +132,15 @@ export default async function Home() {
             >
               Ver propiedades
             </Link>
-            <Link
+            <TrackedWhatsAppLink
               href={generalWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
+              source="site_cta"
               className="rounded-md bg-brand px-5 py-3 text-center text-sm font-extrabold text-white"
             >
               Hablar por WhatsApp
-            </Link>
+            </TrackedWhatsAppLink>
           </div>
         </div>
       </section>

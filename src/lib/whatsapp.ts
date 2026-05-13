@@ -1,3 +1,5 @@
+import { buildCanonicalUrl } from "@/lib/seo";
+
 export const WHATSAPP_NUMBER = "542664572176";
 export const PHONE_NUMBER = "2664215382";
 export const DISPLAY_WHATSAPP = "266 4572176";
@@ -13,12 +15,13 @@ export function buildWhatsAppLink(message: string, phone = WHATSAPP_NUMBER) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
-export function propertyWhatsAppMessage(title: string) {
-  return `Hola, quiero consultar por esta propiedad: ${title}. La vi en la web de Víctor Abadie Inmobiliaria.`;
+export function propertyWhatsAppMessage(title: string, slug?: string) {
+  const propertyUrl = slug ? ` - ${buildCanonicalUrl(`/propiedades/${slug}`)}` : "";
+  return `Hola, quiero consultar por esta propiedad: ${title}${propertyUrl}`;
 }
 
-export function propertyWhatsAppLink(title: string) {
-  return buildWhatsAppLink(propertyWhatsAppMessage(title));
+export function propertyWhatsAppLink(title: string, slug?: string) {
+  return buildWhatsAppLink(propertyWhatsAppMessage(title, slug));
 }
 
 export function generalWhatsAppLink() {

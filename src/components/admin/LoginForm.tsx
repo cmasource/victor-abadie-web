@@ -25,18 +25,14 @@ export function LoginForm() {
       });
 
       if (signInError) {
-        setError(signInError.message);
+        setError("No se pudo iniciar sesión. Revisá email y contraseña.");
         return;
       }
 
       router.replace("/admin");
       router.refresh();
-    } catch (exception) {
-      setError(
-        exception instanceof Error
-          ? exception.message
-          : "No se pudo iniciar sesión.",
-      );
+    } catch {
+      setError("No se pudo iniciar sesión. Intentá nuevamente.");
     } finally {
       setLoading(false);
     }

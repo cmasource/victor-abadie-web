@@ -89,9 +89,7 @@ export function ChangePasswordForm() {
       </label>
 
       <p className="text-xs leading-5 text-muted">
-        La versión instalada de Supabase actualiza la contraseña del usuario autenticado
-        con updateUser password. El campo de contraseña
-        actual queda como validación visual del panel.
+        Usá una contraseña nueva de al menos 8 caracteres y guardala en un lugar seguro.
       </p>
 
       {error ? (

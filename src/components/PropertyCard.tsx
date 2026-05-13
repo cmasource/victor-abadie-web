@@ -1,5 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
+import {
+  TrackedPropertyCardLink,
+  TrackedWhatsAppLink,
+} from "@/components/TrackedLinks";
 import { formatArea, formatPrice } from "@/lib/formatters";
 import { buildPropertyImageAlt } from "@/lib/seo";
 import { propertyWhatsAppLink } from "@/lib/whatsapp";
@@ -7,14 +10,25 @@ import type { Property } from "@/types/property";
 
 type PropertyCardProps = {
   property: Property;
+  trackingSource?: "home" | "properties_page" | "property_card";
 };
 
-export function PropertyCard({ property }: PropertyCardProps) {
+export function PropertyCard({
+  property,
+  trackingSource = "property_card",
+}: PropertyCardProps) {
   const imageAlt = buildPropertyImageAlt(property);
+  const detailHref = `/propiedades/${property.slug}`;
 
   return (
     <article className="group overflow-hidden rounded-lg border border-black/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-      <Link href={`/propiedades/${property.slug}`} className="block">
+      <TrackedPropertyCardLink
+        href={detailHref}
+        source={trackingSource}
+        propertySlug={property.slug}
+        propertyTitle={property.title}
+        className="block"
+      >
         <div className="relative aspect-square overflow-hidden bg-[#f1f5ef]">
           <Image
             src={property.mainImage}
@@ -31,17 +45,22 @@ export function PropertyCard({ property }: PropertyCardProps) {
             {property.type}
           </div>
         </div>
-      </Link>
+      </TrackedPropertyCardLink>
       <div className="p-5">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-wide text-muted">
           <span>{property.status}</span>
           <span>{property.neighborhood}</span>
         </div>
-        <Link href={`/propiedades/${property.slug}`}>
+        <TrackedPropertyCardLink
+          href={detailHref}
+          source={trackingSource}
+          propertySlug={property.slug}
+          propertyTitle={property.title}
+        >
           <h3 className="mt-3 text-xl font-black leading-snug text-[#111111] transition hover:text-brand-dark">
             {property.title}
           </h3>
-        </Link>
+        </TrackedPropertyCardLink>
         <p className="mt-2 text-sm font-semibold text-muted">{property.location}</p>
         <p className="mt-4 text-2xl font-black text-brand-dark">
           {formatPrice(property)}
@@ -58,20 +77,28 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </span>
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <Link
-            href={`/propiedades/${property.slug}`}
+          <TrackedPropertyCardLink
+            href={detailHref}
+            source={trackingSource}
+            propertySlug={property.slug}
+            propertyTitle={property.title}
             className="rounded-md bg-[#111111] px-4 py-3 text-center text-sm font-extrabold text-white transition hover:bg-black"
           >
             Ver detalle
-          </Link>
-          <Link
-            href={propertyWhatsAppLink(property.title)}
+          </TrackedPropertyCardLink>
+          <TrackedWhatsAppLink
+            href={propertyWhatsAppLink(property.title, property.slug)}
             target="_blank"
             rel="noopener noreferrer"
+            source="property_card"
+            propertySlug={property.slug}
+            propertyTitle={property.title}
+            operation={property.operation}
+            propertyType={property.type}
             className="rounded-md border border-brand px-4 py-3 text-center text-sm font-extrabold text-brand-dark transition hover:bg-brand hover:text-white"
           >
             WhatsApp
-          </Link>
+          </TrackedWhatsAppLink>
         </div>
       </div>
     </article>

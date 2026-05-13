@@ -153,7 +153,7 @@ export function PropertyFilters({ properties }: PropertyFiltersProps) {
           </button>
         </div>
       </div>
-      <PropertyGrid properties={filteredProperties} />
+      <PropertyGrid properties={filteredProperties} trackingSource="properties_page" />
     </div>
   );
 }

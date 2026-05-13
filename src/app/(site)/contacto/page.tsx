@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LeadForm } from "@/components/LeadForm";
+import {
+  TrackedInstagramLink,
+  TrackedWhatsAppLink,
+} from "@/components/TrackedLinks";
 import { buildCanonicalUrl } from "@/lib/seo";
 import { FACEBOOK_URL, INSTAGRAM_URL, SERVICE_AREAS } from "@/lib/site";
 import {
@@ -47,28 +51,66 @@ export default function ContactPage() {
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {contactCards.map(([label, value, href]) => (
-              <Link
-                key={label}
-                href={href}
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="rounded-lg border border-black/5 bg-surface p-5 transition hover:border-brand hover:bg-white hover:shadow-md"
-              >
-                <p className="text-sm font-bold text-muted">{label}</p>
-                <p className="mt-2 text-lg font-black text-[#111111]">{value}</p>
-              </Link>
-            ))}
+            {contactCards.map(([label, value, href]) => {
+              const className =
+                "rounded-lg border border-black/5 bg-surface p-5 transition hover:border-brand hover:bg-white hover:shadow-md";
+
+              if (label === "WhatsApp") {
+                return (
+                  <TrackedWhatsAppLink
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    source="contact_page"
+                    className={className}
+                  >
+                    <p className="text-sm font-bold text-muted">{label}</p>
+                    <p className="mt-2 text-lg font-black text-[#111111]">{value}</p>
+                  </TrackedWhatsAppLink>
+                );
+              }
+
+              if (label === "Instagram") {
+                return (
+                  <TrackedInstagramLink
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    source="contact_page"
+                    className={className}
+                  >
+                    <p className="text-sm font-bold text-muted">{label}</p>
+                    <p className="mt-2 text-lg font-black text-[#111111]">{value}</p>
+                  </TrackedInstagramLink>
+                );
+              }
+
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className={className}
+                >
+                  <p className="text-sm font-bold text-muted">{label}</p>
+                  <p className="mt-2 text-lg font-black text-[#111111]">{value}</p>
+                </Link>
+              );
+            })}
           </div>
 
-          <Link
+          <TrackedWhatsAppLink
             href={generalWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
+            source="contact_page"
             className="mt-6 inline-flex rounded-md bg-brand px-5 py-3 text-sm font-extrabold text-white hover:bg-brand-dark"
           >
             Hacer consulta por WhatsApp
-          </Link>
+          </TrackedWhatsAppLink>
         </div>
 
         <div>

@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BUSINESS_NAME } from "@/lib/site";
+import {
+  TrackedInstagramLink,
+  TrackedWhatsAppLink,
+} from "@/components/TrackedLinks";
+import { BUSINESS_NAME, INSTAGRAM_URL } from "@/lib/site";
 import { DISPLAY_PHONE, DISPLAY_WHATSAPP, buildWhatsAppLink } from "@/lib/whatsapp";
 
 export function Footer() {
@@ -47,14 +51,24 @@ export function Footer() {
             <Link href="/contacto" className="hover:text-white">
               Contacto
             </Link>
-            <Link
+            <TrackedInstagramLink
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              source="footer"
+              className="hover:text-white"
+            >
+              Instagram
+            </TrackedInstagramLink>
+            <TrackedWhatsAppLink
               href={buildWhatsAppLink("Hola, quiero consultar con Víctor Abadie Inmobiliaria.")}
               target="_blank"
               rel="noopener noreferrer"
+              source="footer"
               className="font-bold text-brand"
             >
               Consultar por WhatsApp
-            </Link>
+            </TrackedWhatsAppLink>
             <Link href="/admin/login" className="pt-2 text-xs text-white/45 hover:text-white/75">
               Acceso admin
             </Link>

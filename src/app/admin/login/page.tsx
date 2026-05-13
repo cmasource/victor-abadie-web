@@ -45,7 +45,7 @@ export default async function AdminLoginPage() {
           </p>
           <h1 className="mt-3 text-3xl font-black text-[#111111]">Ingresar</h1>
           <p className="mt-3 text-sm leading-6 text-muted">
-            Acceso exclusivo para usuarios autorizados en Supabase.
+            Acceso exclusivo para usuarios autorizados del panel.
           </p>
           <div className="mt-8">
             <LoginForm />

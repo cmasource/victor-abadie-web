@@ -4,7 +4,9 @@ import { ContactCTA } from "@/components/ContactCTA";
 import { JsonLd } from "@/components/JsonLd";
 import { PropertyFeatures } from "@/components/PropertyFeatures";
 import { PropertyGallery } from "@/components/PropertyGallery";
+import { PropertyViewTracker } from "@/components/PropertyViewTracker";
 import { RelatedProperties } from "@/components/RelatedProperties";
+import { TrackedWhatsAppLink } from "@/components/TrackedLinks";
 import { formatPrice } from "@/lib/formatters";
 import { propertyJsonLd } from "@/lib/jsonLd";
 import {
@@ -43,6 +45,13 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   return (
     <>
       <JsonLd data={propertyJsonLd(property)} />
+      <PropertyViewTracker
+        slug={property.slug}
+        title={property.title}
+        operation={property.operation}
+        type={property.type}
+        location={property.location}
+      />
       <section className="container-page py-8 md:py-12">
         <Link href="/propiedades" className="text-sm font-extrabold text-brand-dark">
           Volver a propiedades
@@ -108,14 +117,20 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               Enviá una consulta con el título de la propiedad ya incluido o
               llamá al fijo para coordinar atención.
             </p>
-            <Link
-              href={propertyWhatsAppLink(property.title)}
+            <TrackedWhatsAppLink
+              href={propertyWhatsAppLink(property.title, property.slug)}
               target="_blank"
               rel="noopener noreferrer"
+              ariaLabel={`Consultar por WhatsApp por ${property.title}`}
+              source="property_detail"
+              propertySlug={property.slug}
+              propertyTitle={property.title}
+              operation={property.operation}
+              propertyType={property.type}
               className="mt-6 flex rounded-md bg-brand px-5 py-3 text-center text-sm font-extrabold text-white hover:bg-brand-dark"
             >
               Consultar por WhatsApp
-            </Link>
+            </TrackedWhatsAppLink>
             <Link
               href={phoneHref()}
               className="mt-3 flex rounded-md border border-black/10 px-5 py-3 text-center text-sm font-extrabold text-[#111111] hover:border-brand hover:text-brand-dark"
@@ -132,14 +147,20 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
       <div className="sticky bottom-0 z-40 border-t border-black/5 bg-white p-3 shadow-2xl lg:hidden">
         <div className="container-page grid grid-cols-2 gap-3">
-          <Link
-            href={propertyWhatsAppLink(property.title)}
+          <TrackedWhatsAppLink
+            href={propertyWhatsAppLink(property.title, property.slug)}
             target="_blank"
             rel="noopener noreferrer"
+            ariaLabel={`Consultar por WhatsApp por ${property.title}`}
+            source="property_detail"
+            propertySlug={property.slug}
+            propertyTitle={property.title}
+            operation={property.operation}
+            propertyType={property.type}
             className="rounded-md bg-brand px-4 py-3 text-center text-sm font-extrabold text-white"
           >
             WhatsApp
-          </Link>
+          </TrackedWhatsAppLink>
           <Link
             href={phoneHref()}
             className="rounded-md border border-black/10 px-4 py-3 text-center text-sm font-extrabold text-[#111111]"

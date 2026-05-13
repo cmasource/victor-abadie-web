@@ -27,7 +27,7 @@ export function AdminPropertyActions({
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.from("properties").update(values).eq("id", id);
     if (error) {
-      alert(error.message);
+      alert("No se pudo actualizar la propiedad. Intentá nuevamente.");
       setLoading(false);
       return;
     }
@@ -53,7 +53,7 @@ export function AdminPropertyActions({
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      alert(userError?.message || "No se pudo validar la sesión.");
+      alert("No se pudo validar la sesión. Iniciá sesión nuevamente.");
       setLoading(false);
       return;
     }
@@ -65,14 +65,14 @@ export function AdminPropertyActions({
       .maybeSingle();
 
     if (adminError || adminUser?.role === "editor") {
-      alert(adminError?.message || "Solo el owner puede eliminar propiedades.");
+      alert("Solo el owner puede eliminar propiedades.");
       setLoading(false);
       return;
     }
 
     const { error } = await supabase.from("properties").delete().eq("id", id);
     if (error) {
-      alert(error.message);
+      alert("No se pudo eliminar la propiedad. Intentá nuevamente.");
       setLoading(false);
       return;
     }

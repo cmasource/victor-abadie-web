@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { InstagramExternalWidget } from "@/components/InstagramExternalWidget";
+import { TrackedInstagramLink } from "@/components/TrackedLinks";
 
 const ELFSIGHT_SCRIPT_SRC = "https://elfsightcdn.com/platform.js";
 
@@ -25,14 +25,15 @@ export async function InstagramFeedSection() {
           </div>
 
           <div className="lg:text-right">
-            <Link
+            <TrackedInstagramLink
               href="https://www.instagram.com/victorabadieinmo"
               target="_blank"
               rel="noopener noreferrer"
+              source="home_section"
               className="inline-flex rounded-md bg-brand px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-brand-dark"
             >
               Ver Instagram
-            </Link>
+            </TrackedInstagramLink>
           </div>
         </div>
 

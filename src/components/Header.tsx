@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { trackWhatsAppClick } from "@/lib/analyticsEvents";
 import { BUSINESS_NAME } from "@/lib/site";
 import { generalWhatsAppLink } from "@/lib/whatsapp";
 
@@ -52,6 +53,7 @@ export function Header() {
             href={generalWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick({ source: "site_cta" })}
             className="rounded-md bg-brand px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-brand-dark"
           >
             Consultar

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedWhatsAppLink } from "@/components/TrackedLinks";
 import { sellPropertyWhatsAppLink } from "@/lib/whatsapp";
 
 export function SellPropertySection() {
@@ -23,14 +23,15 @@ export function SellPropertySection() {
             Ideal para propietarios que quieren vender en San Luis, Juana
             Koslay, La Punta y zonas cercanas con acompañamiento comercial.
           </p>
-          <Link
+          <TrackedWhatsAppLink
             href={sellPropertyWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
+            source="sell_property"
             className="mt-6 inline-flex rounded-md bg-brand px-5 py-3 text-sm font-extrabold text-white hover:bg-brand-dark"
           >
             Quiero vender mi propiedad
-          </Link>
+          </TrackedWhatsAppLink>
         </div>
       </div>
     </section>

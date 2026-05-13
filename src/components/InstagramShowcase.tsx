@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedInstagramLink } from "@/components/TrackedLinks";
 import { buildPropertyImageAlt } from "@/lib/seo";
 import type { Property } from "@/types/property";
 
@@ -78,14 +78,15 @@ export function InstagramShowcase({ properties = [], compact = false }: Instagra
             </p>
           </div>
           <div className="lg:text-right">
-            <Link
+            <TrackedInstagramLink
               href="https://www.instagram.com/victorabadieinmo"
               target="_blank"
               rel="noopener noreferrer"
+              source="home_section"
               className="inline-flex rounded-md bg-brand px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-brand-dark"
             >
               Ver Instagram
-            </Link>
+            </TrackedInstagramLink>
           </div>
         </div>
         ) : (

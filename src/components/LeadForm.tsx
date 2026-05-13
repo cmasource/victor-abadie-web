@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { trackWhatsAppClick } from "@/lib/analyticsEvents";
 import {
   GENERAL_WHATSAPP_MESSAGE,
   SELL_PROPERTY_MESSAGE,
@@ -43,6 +44,9 @@ export function LeadForm({ mode }: LeadFormProps) {
     }
 
     setError("");
+    trackWhatsAppClick({
+      source: mode === "sell" ? "sell_property" : "contact_page",
+    });
     window.open(buildWhatsAppLink(fullMessage), "_blank", "noopener,noreferrer");
   }
 

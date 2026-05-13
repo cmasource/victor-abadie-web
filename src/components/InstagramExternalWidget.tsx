@@ -1,8 +1,8 @@
 "use client";
 
 import Script from "next/script";
-import Link from "next/link";
 import { useMemo } from "react";
+import { TrackedInstagramLink } from "@/components/TrackedLinks";
 import type { InstagramWidgetProvider } from "@/config/instagramWidget";
 
 type InstagramExternalWidgetProps = {
@@ -37,14 +37,15 @@ export function InstagramExternalWidget({
         <p className="text-sm font-bold text-muted">
           Publicaciones de Instagram
         </p>
-        <Link
+        <TrackedInstagramLink
           href="https://www.instagram.com/victorabadieinmo"
           target="_blank"
           rel="noopener noreferrer"
+          source="home_section"
           className="rounded-md border border-black/10 px-4 py-2 text-center text-sm font-black text-[#111111] transition hover:border-brand hover:text-brand-dark"
         >
           Ver Instagram
-        </Link>
+        </TrackedInstagramLink>
       </div>
 
       {scripts.map((src) => {

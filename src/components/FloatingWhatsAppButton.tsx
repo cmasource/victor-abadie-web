@@ -1,20 +1,21 @@
-import Link from "next/link";
+import { TrackedWhatsAppLink } from "@/components/TrackedLinks";
 import { generalWhatsAppLink } from "@/lib/whatsapp";
 
 export function FloatingWhatsAppButton() {
   return (
-    <Link
+    <TrackedWhatsAppLink
       href={generalWhatsAppLink()}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Consultar por WhatsApp"
+      ariaLabel="Consultar por WhatsApp"
+      source="floating_button"
       className="fixed bottom-5 right-5 z-[80] inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-black text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-brand-dark focus:outline-none focus:ring-4 focus:ring-brand/25 sm:bottom-6 sm:right-6"
     >
       <span className="grid h-7 w-7 place-items-center rounded-full bg-white/20">
         <WhatsAppIcon />
       </span>
       <span className="hidden sm:inline">WhatsApp</span>
-    </Link>
+    </TrackedWhatsAppLink>
   );
 }
 

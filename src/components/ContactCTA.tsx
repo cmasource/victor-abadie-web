@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TrackedWhatsAppLink } from "@/components/TrackedLinks";
 import { generalWhatsAppLink, phoneHref } from "@/lib/whatsapp";
 
 type ContactCTAProps = {
@@ -26,14 +27,15 @@ export function ContactCTA({
           >
             Ver propiedades
           </Link>
-          <Link
+          <TrackedWhatsAppLink
             href={generalWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
+            source="site_cta"
             className="rounded-md bg-white px-5 py-3 text-center text-sm font-extrabold text-[#111111]"
           >
             Hablar por WhatsApp
-          </Link>
+          </TrackedWhatsAppLink>
           <Link
             href={phoneHref()}
             className="rounded-md border border-white/45 px-5 py-3 text-center text-sm font-extrabold text-white"

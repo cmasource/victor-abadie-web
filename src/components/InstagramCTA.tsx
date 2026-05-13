@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedInstagramLink } from "@/components/TrackedLinks";
 
 export function InstagramCTA() {
   return (
@@ -16,14 +16,15 @@ export function InstagramCTA() {
             ahora, el enlace lleva directo al perfil oficial.
           </p>
         </div>
-        <Link
+        <TrackedInstagramLink
           href="https://www.instagram.com/victorabadieinmo"
           target="_blank"
           rel="noopener noreferrer"
+          source="home_section"
           className="rounded-md bg-brand px-5 py-3 text-center text-sm font-bold text-white hover:bg-brand-dark"
         >
           Ver Instagram
-        </Link>
+        </TrackedInstagramLink>
       </div>
     </section>
   );
