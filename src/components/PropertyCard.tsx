@@ -15,13 +15,13 @@ export function PropertyCard({ property }: PropertyCardProps) {
   return (
     <article className="group overflow-hidden rounded-lg border border-black/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
       <Link href={`/propiedades/${property.slug}`} className="block">
-        <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+        <div className="relative aspect-square overflow-hidden bg-[#f1f5ef]">
           <Image
             src={property.mainImage}
             alt={imageAlt}
             fill
             unoptimized
-            className="object-cover transition duration-500 group-hover:scale-105"
+            className="object-contain transition duration-500 group-hover:scale-[1.02]"
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           />
           <div className="absolute left-4 top-4 rounded-md bg-brand px-3 py-2 text-xs font-black uppercase text-white">

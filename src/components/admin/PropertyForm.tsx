@@ -255,7 +255,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
     setSuccess("");
 
     if (!title.trim() || !currentSlug.trim()) {
-      setError("T?tulo y slug son obligatorios.");
+      setError("Título y slug son obligatorios.");
       return;
     }
 
@@ -268,16 +268,16 @@ export function PropertyForm({ property }: PropertyFormProps) {
 
       if (selectedImages.length > 0) {
         try {
-          // TODO: sumar compresi?n/redimensionado antes del upload para fotos pesadas.
+          // TODO: sumar compresión/redimensionado antes del upload para fotos pesadas.
           await uploadPropertyImages(saved.id, saved.slug, selectedImages);
           setSelectedImages([]);
         } catch (uploadException) {
           const uploadMessage =
             uploadException instanceof Error
               ? uploadException.message
-              : "Error desconocido al subir im?genes.";
+              : "Error desconocido al subir imágenes.";
           setError(
-            `La propiedad se guard?, pero no se pudieron subir las im?genes: ${uploadMessage}. Pod?s reintentar desde /admin/propiedades/${saved.id}/editar.`,
+            `La propiedad se guardó, pero no se pudieron subir las imágenes: ${uploadMessage}. Podés reintentar desde /admin/propiedades/${saved.id}/editar.`,
           );
           return;
         }
@@ -286,7 +286,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
       setSuccess(
         property
           ? "Propiedad actualizada correctamente."
-          : "Propiedad guardada e im?genes subidas correctamente.",
+          : "Propiedad guardada e imágenes subidas correctamente.",
       );
       window.sessionStorage.removeItem("pendingInstagramPropertyDraft");
       window.setTimeout(() => {
@@ -337,12 +337,12 @@ export function PropertyForm({ property }: PropertyFormProps) {
         ) : null}
 
         <div className="grid gap-4 md:grid-cols-3">
-          <Select label="Operaci?n" value={operation} options={operations} onChange={setOperation} />
+          <Select label="Operación" value={operation} options={operations} onChange={setOperation} />
           <Select label="Tipo" value={type} options={types} onChange={setType} />
           <Select label="Estado" value={status} options={statuses} onChange={setStatus} />
         </div>
 
-        <Field label="T?tulo" value={title} onChange={handleTitleChange} required />
+        <Field label="Título" value={title} onChange={handleTitleChange} required />
         <Field label="Slug" value={currentSlug} onChange={(value) => setSlug(slugify(value))} required />
 
         <div className="grid gap-4 md:grid-cols-3">
@@ -359,7 +359,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
 
         <section className="rounded-lg border border-black/5 bg-surface/60 p-4">
           <h2 className="text-base font-black text-[#111111]">Datos técnicos</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
             <Field
               label="Dormitorios"
               value={bedrooms}
@@ -415,12 +415,12 @@ export function PropertyForm({ property }: PropertyFormProps) {
 
         <Textarea label="Descripción" value={description} onChange={setDescription} />
         <Textarea label="Extracto corto" value={excerpt || ""} onChange={setExcerpt} rows={3} />
-        <Field label="Caracter?sticas separadas por coma" value={features} onChange={setFeatures} />
+        <Field label="Características separadas por coma" value={features} onChange={setFeatures} />
         <Field label="Tags separados por coma" value={tags} onChange={setTags} />
 
         <div className="rounded-lg bg-surface p-4">
           <Textarea
-            label="Notas internas / descripci?n desordenada"
+            label="Notas internas / descripción desordenada"
             value={internalNotes}
             onChange={setInternalNotes}
             rows={4}
@@ -436,7 +436,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
             <div className="mt-4 rounded-md bg-white p-4 text-sm leading-6 text-muted">
               {titleSuggestion ? (
                 <>
-                  <p className="font-black text-[#111111]">T?tulo sugerido</p>
+                  <p className="font-black text-[#111111]">Título sugerido</p>
                   <p className="mt-1">{titleSuggestion}</p>
                 </>
               ) : null}
@@ -471,9 +471,9 @@ export function PropertyForm({ property }: PropertyFormProps) {
             ? "Guardando..."
             : property
               ? selectedImages.length > 0
-                ? "Guardar cambios y subir im?genes"
+                ? "Guardar cambios y subir imágenes"
                 : "Guardar cambios"
-              : "Guardar propiedad y subir im?genes"}
+              : "Guardar propiedad y subir imágenes"}
         </button>
       </form>
 
@@ -522,8 +522,8 @@ function AreaField({
   placeholder,
 }: AreaFieldProps) {
   return (
-    <AdminField label={label}>
-      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_92px] gap-2">
+    <AdminField label={label} className="xl:col-span-2">
+      <div className="grid min-w-0 grid-cols-[minmax(90px,1fr)_96px] gap-2">
         <input
           type="text"
           inputMode="decimal"

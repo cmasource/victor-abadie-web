@@ -100,7 +100,7 @@ export function InstagramShowcase({ properties = [], compact = false }: Instagra
               key={`${post.badge}-${post.title}-${index}`}
               className="group overflow-hidden rounded-lg border border-black/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="relative aspect-square overflow-hidden bg-surface">
+              <div className="relative aspect-square overflow-hidden bg-[#f1f5ef]">
                 <Image
                   src={post.image}
                   alt={
@@ -110,7 +110,7 @@ export function InstagramShowcase({ properties = [], compact = false }: Instagra
                   }
                   fill
                   unoptimized
-                  className="object-cover transition duration-500 group-hover:scale-105"
+                  className="object-contain transition duration-500 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
                 <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-black text-brand-dark shadow-sm">

@@ -5,7 +5,14 @@ import { buildCanonicalUrl } from "@/lib/seo";
 const now = new Date();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const properties = await getPublishedProperties();
+  let properties: Awaited<ReturnType<typeof getPublishedProperties>> = [];
+
+  try {
+    properties = await getPublishedProperties();
+  } catch (error) {
+    console.error("No se pudieron cargar propiedades para sitemap:", error);
+  }
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: buildCanonicalUrl("/"),

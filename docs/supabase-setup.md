@@ -118,7 +118,7 @@ Revisar:
 
 ### No aparecen propiedades públicas
 
-Revisar que la propiedad tenga `published = true`. Si Supabase no está configurado, la web usa fallback desde `src/data/properties.json`.
+Revisar que la propiedad tenga `published = true`. El fallback desde `src/data/properties.json` es solo para desarrollo local cuando Supabase no está configurado; en producción la web pública debe leer propiedades reales desde Supabase.
 
 ## Deploy en Vercel
 

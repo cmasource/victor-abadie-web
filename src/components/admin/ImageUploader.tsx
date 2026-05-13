@@ -198,13 +198,13 @@ export function ImageUploader({
               key={image.id || image.url}
               className="min-w-0 rounded-lg border border-black/5 p-3"
             >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-surface">
+              <div className="relative aspect-square overflow-hidden rounded-md bg-[#f1f5ef]">
                 <Image
                   src={image.url}
                   alt={image.alt || "Imagen"}
                   fill
                   unoptimized
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="mt-3 grid gap-2">

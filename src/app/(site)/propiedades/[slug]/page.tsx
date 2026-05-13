@@ -9,7 +9,6 @@ import { formatPrice } from "@/lib/formatters";
 import { propertyJsonLd } from "@/lib/jsonLd";
 import {
   getPropertyBySlug,
-  getPublishedProperties,
   getRelatedProperties,
 } from "@/lib/propertiesRepository";
 import { propertyMetadata } from "@/lib/seo";
@@ -19,10 +18,8 @@ type PropertyDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  const properties = await getPublishedProperties();
-  return properties.map((property) => ({ slug: property.slug }));
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: PropertyDetailPageProps) {
   const { slug } = await params;

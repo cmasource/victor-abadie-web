@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const categories = [
   ["Casas", "Viviendas familiares en San Luis, Juana Koslay y zonas cercanas."],
   ["Terrenos", "Lotes para construir, invertir o proyectar en zonas de crecimiento."],
@@ -68,7 +71,7 @@ export default async function Home() {
           <SectionTitle
             eyebrow="Últimos ingresos"
             title="Propiedades recientes para consultar"
-            description="Una selección ordenada por fecha de publicación desde el archivo JSON local."
+            description="Una selección de propiedades publicadas recientemente."
           />
           <div className="mt-8">
             <PropertyGrid properties={recentProperties} />

@@ -1,17 +1,12 @@
 import { hasSupabaseConfig } from "@/config/site";
 import jsonPropertiesData from "@/data/properties.json";
-import {
-  mapJsonProperty,
-  mapSupabaseProperty,
-} from "@/lib/propertyMappers";
+import { mapJsonProperty, mapSupabaseProperty } from "@/lib/propertyMappers";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type {
-  Property,
-  SupabasePropertyRow,
-} from "@/types/property";
+import type { Property, SupabasePropertyRow } from "@/types/property";
 
 const jsonProperties = (jsonPropertiesData as Property[]).map(mapJsonProperty);
+const isDevelopment = process.env.NODE_ENV === "development";
 
 function sortRecent(properties: Property[]) {
   return [...properties].sort(
@@ -19,7 +14,12 @@ function sortRecent(properties: Property[]) {
   );
 }
 
-function fallbackProperties() {
+function developmentFallbackProperties(reason: string) {
+  if (!isDevelopment) {
+    throw new Error(reason);
+  }
+
+  console.warn(`${reason} Usando fallback JSON solo en development.`);
   return sortRecent(jsonProperties.filter((property) => property.published !== false));
 }
 
@@ -39,9 +39,13 @@ function selectWithImages() {
   `;
 }
 
+function mapRows(rows: unknown[] | null) {
+  return ((rows || []) as unknown as SupabasePropertyRow[]).map(mapSupabaseProperty);
+}
+
 export async function getProperties() {
   if (!hasSupabaseConfig) {
-    return fallbackProperties();
+    return developmentFallbackProperties("Supabase no está configurado para getProperties.");
   }
 
   try {
@@ -52,22 +56,20 @@ export async function getProperties() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.warn("Supabase getProperties fallback:", error.message);
-      return fallbackProperties();
+      return developmentFallbackProperties(`Supabase getProperties error: ${error.message}`);
     }
 
-    return ((data || []) as unknown as SupabasePropertyRow[]).map(
-      mapSupabaseProperty,
-    );
+    return mapRows(data);
   } catch (error) {
-    console.warn("Supabase getProperties fallback:", error);
-    return fallbackProperties();
+    return developmentFallbackProperties(`Supabase getProperties exception: ${String(error)}`);
   }
 }
 
 export async function getPublishedProperties() {
   if (!hasSupabaseConfig) {
-    return fallbackProperties();
+    return developmentFallbackProperties(
+      "Supabase no está configurado para getPublishedProperties.",
+    );
   }
 
   try {
@@ -78,17 +80,23 @@ export async function getPublishedProperties() {
       .eq("published", true)
       .order("created_at", { ascending: false });
 
-    if (error || !data || data.length === 0) {
-      if (error) {
-        console.warn("Supabase getPublishedProperties fallback:", error.message);
-      }
-      return fallbackProperties();
+    if (error) {
+      return developmentFallbackProperties(
+        `Supabase getPublishedProperties error: ${error.message}`,
+      );
     }
 
-    return (data as unknown as SupabasePropertyRow[]).map(mapSupabaseProperty);
+    const properties = mapRows(data);
+    if (isDevelopment) {
+      console.info(
+        `[propertiesRepository] Supabase publicadas: ${properties.length}`,
+      );
+    }
+    return properties;
   } catch (error) {
-    console.warn("Supabase getPublishedProperties fallback:", error);
-    return fallbackProperties();
+    return developmentFallbackProperties(
+      `Supabase getPublishedProperties exception: ${String(error)}`,
+    );
   }
 }
 
@@ -104,7 +112,9 @@ export async function getRecentProperties(limit = 6) {
 
 export async function getPropertyBySlug(slug: string) {
   if (!hasSupabaseConfig) {
-    return fallbackProperties().find((property) => property.slug === slug);
+    return developmentFallbackProperties(
+      "Supabase no está configurado para getPropertyBySlug.",
+    ).find((property) => property.slug === slug);
   }
 
   try {
@@ -117,16 +127,18 @@ export async function getPropertyBySlug(slug: string) {
       .maybeSingle();
 
     if (error) {
-      console.warn("Supabase getPropertyBySlug fallback:", error.message);
-      return fallbackProperties().find((property) => property.slug === slug);
+      return developmentFallbackProperties(
+        `Supabase getPropertyBySlug error: ${error.message}`,
+      ).find((property) => property.slug === slug);
     }
 
     return data
       ? mapSupabaseProperty(data as unknown as SupabasePropertyRow)
       : undefined;
   } catch (error) {
-    console.warn("Supabase getPropertyBySlug fallback:", error);
-    return fallbackProperties().find((property) => property.slug === slug);
+    return developmentFallbackProperties(
+      `Supabase getPropertyBySlug exception: ${String(error)}`,
+    ).find((property) => property.slug === slug);
   }
 }
 

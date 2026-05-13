@@ -19,13 +19,13 @@ export function AdminPropertyCard({
 }: AdminPropertyCardProps) {
   return (
     <article className="grid min-w-0 gap-4 overflow-hidden rounded-lg border border-black/5 bg-white p-4 shadow-sm transition hover:border-brand/30 hover:shadow-md lg:grid-cols-[140px_1fr_220px] lg:items-center">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-surface lg:h-[96px] lg:w-[128px]">
+      <div className="relative aspect-square overflow-hidden rounded-md bg-[#f1f5ef] lg:h-[112px] lg:w-[112px]">
         <Image
           src={property.mainImage}
           alt={property.title}
           fill
           unoptimized
-          className="object-cover"
+          className="object-contain"
         />
       </div>
 
